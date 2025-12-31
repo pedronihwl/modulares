@@ -1,9 +1,11 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Header, HttpCode, HttpStatus, NotFoundException, Param, Post, Req, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { randomUUID } from 'crypto';
-import { extname } from 'path';
 import { PrismaService } from './services/prisma-service';
+import path, { extname } from 'path';
+import fs from 'fs';
+import type { Request, Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -64,5 +66,52 @@ export class AppController {
     });
 
     return video;
+  }
+
+
+  @Get("video/:videoId")
+  @Header('Content-Type', 'video/mp4')
+  async streamVideo(
+    @Param("videoId") id: string,
+    @Req() _req: Request,
+    @Res() _res: Response) {
+
+    const file = await this.prismaService.video.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!file) {
+      throw new NotFoundException(`Video with id ${id} not found`)
+    }
+
+    const videoPath = path.join('.', file.url);
+    const fileSize = fs.statSync(videoPath).size;
+
+    const range = _req.headers.range;
+
+    if (range) {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+      const chunksize = end - start + 1;
+      const file = fs.createReadStream(videoPath, { start, end });
+
+      _res.writeHead(HttpStatus.PARTIAL_CONTENT, {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': 'video/mp4',
+      });
+
+      return file.pipe(_res);
+    }
+
+    _res.writeHead(HttpStatus.OK, {
+      'Content-Length': fileSize,
+      'Content-Type': 'video/mp4',
+    });
   }
 }

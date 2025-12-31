@@ -73,4 +73,37 @@ describe("Video controller (e2e)", () => {
 
         })
     })
+
+    describe('[GET] /video/:videoId', () => {
+        it('streams a video', async () => {
+          const { body: sampleVideo } = await request(app.getHttpServer())
+            .post('/video')
+            .attach('video', './test/fixtures/sample.mp4')
+            .attach('thumbnail', './test/fixtures/sample.jpg')
+            .field('title', 'Test Video')
+            .field('description', 'This is a test video')
+            .expect(HttpStatus.CREATED);
+    
+          const fileSize = 18347;
+          const range = `bytes=0-${fileSize - 1}`;
+    
+          const response = await request(app.getHttpServer())
+            .get(`/video/${sampleVideo.id}`)
+            .set('Range', range)
+            .expect(HttpStatus.PARTIAL_CONTENT);
+    
+          expect(response.headers['content-range']).toBe(
+            `bytes 0-${fileSize - 1}/${fileSize}`,
+          );
+          expect(response.headers['accept-ranges']).toBe('bytes');
+          expect(response.headers['content-length']).toBe(String(fileSize));
+          expect(response.headers['content-type']).toBe('video/mp4');
+        });
+    
+        it('returns 404 if the video is not found', async () => {
+          await request(app.getHttpServer())
+            .get('/video/45705b56-a47f-4869-b736-8f6626c940f8')
+            .expect(HttpStatus.NOT_FOUND);
+        });
+      });
 })
