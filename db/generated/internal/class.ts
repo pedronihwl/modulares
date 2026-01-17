@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"./generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Video {\n  id           String   @id\n  title        String\n  description  String\n  url          String\n  sizeInKb     Int\n  duration     Int\n  thumbnailUrl String?\n  createdAt    DateTime\n  updatedAt    DateTime\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"./generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Video {\n  id        String    @id(map: \"PK_2a23c3da7a2fc570b1696191b87\") @db.Uuid\n  createdAt DateTime  @default(now()) @db.Timestamp(6)\n  updatedAt DateTime  @default(now()) @db.Timestamp(6)\n  deletedAt DateTime? @db.Timestamp(6)\n  url       String    @db.VarChar\n  sizeInKb  Int\n  duration  Int\n  movieId   String?   @unique(map: \"REL_46efd1060cb7a7c545b06120d1\") @db.Uuid\n  episodeId String?   @unique(map: \"UQ_ce049b6bf5d3e5aee0f3dbd8dc0\") @db.Uuid\n  Movie     Movie?    @relation(fields: [movieId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_46efd1060cb7a7c545b06120d14\")\n  episode   Episode?  @relation(fields: [episodeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_ce049b6bf5d3e5aee0f3dbd8dc0\")\n}\n\nmodel Content {\n  id          String            @id(map: \"PK_7cb78a77f6c66cb6ea6f4316a5c\") @db.Uuid\n  createdAt   DateTime          @default(now()) @db.Timestamp(6)\n  updatedAt   DateTime          @default(now()) @db.Timestamp(6)\n  deletedAt   DateTime?         @db.Timestamp(6)\n  type        Content_Type_Enum\n  title       String            @db.VarChar\n  description String            @db.VarChar\n  Movie       Movie?\n  TvShow      TvShow?\n}\n\nmodel Movie {\n  id          String     @id(map: \"PK_56d58b76292b87125c5ec8bdde0\") @db.Uuid\n  createdAt   DateTime   @default(now()) @db.Timestamp(6)\n  updatedAt   DateTime   @default(now()) @db.Timestamp(6)\n  deletedAt   DateTime?  @db.Timestamp(6)\n  contentId   String?    @unique(map: \"REL_c155b5944bdd1e260a4ae79bc8\") @db.Uuid\n  thumbnailId String?    @unique(map: \"UQ_a20dc7d8915f1caf6079301b10e\") @db.Uuid\n  Thumbnail   Thumbnail? @relation(fields: [thumbnailId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_a20dc7d8915f1caf6079301b10e\")\n  Content     Content?   @relation(fields: [contentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_c155b5944bdd1e260a4ae79bc82\")\n  Video       Video?\n}\n\nmodel Thumbnail {\n  id        String    @id(map: \"PK_29cfea45a44edc72c599d42037f\") @db.Uuid\n  createdAt DateTime  @default(now()) @db.Timestamp(6)\n  updatedAt DateTime  @default(now()) @db.Timestamp(6)\n  deletedAt DateTime? @db.Timestamp(6)\n  url       String    @db.VarChar\n  Movie     Movie?\n  TvShow    TvShow?\n  episode   Episode?\n}\n\nmodel TvShow {\n  id          String     @id(map: \"PK_0ecc486b5a7a0f90f5857634ed9\") @db.Uuid\n  createdAt   DateTime   @default(now()) @db.Timestamp(6)\n  updatedAt   DateTime   @default(now()) @db.Timestamp(6)\n  deletedAt   DateTime?  @db.Timestamp(6)\n  contentId   String?    @unique(map: \"UQ_b6ac53aff4b7200e4b01ca43a9c\") @db.Uuid\n  thumbnailId String?    @unique(map: \"UQ_e4e17f7e4fbf10e4bcd61aa8e59\") @db.Uuid\n  Content     Content?   @relation(fields: [contentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_b6ac53aff4b7200e4b01ca43a9c\")\n  Thumbnail   Thumbnail? @relation(fields: [thumbnailId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_e4e17f7e4fbf10e4bcd61aa8e59\")\n  episode     Episode[]\n}\n\nmodel Episode {\n  id          String     @id(map: \"PK_7258b95d6d2bf7f621845a0e143\") @db.Uuid\n  createdAt   DateTime   @default(now()) @db.Timestamp(6)\n  updatedAt   DateTime   @default(now()) @db.Timestamp(6)\n  deletedAt   DateTime?  @db.Timestamp(6)\n  title       String     @db.VarChar\n  description String     @db.VarChar\n  season      Int\n  number      Int\n  tvShowId    String?    @db.Uuid\n  thumbnailId String?    @unique(map: \"UQ_6c57a6d8be1b8001ee31093ee99\") @db.Uuid\n  Video       Video?\n  Thumbnail   Thumbnail? @relation(fields: [thumbnailId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_6c57a6d8be1b8001ee31093ee99\")\n  TvShow      TvShow?    @relation(fields: [tvShowId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"FK_bc417590af57a49dc42ce4ba038\")\n}\n\nenum Content_Type_Enum {\n  MOVIE\n  TV_SHOW\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Video\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sizeInKb\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"duration\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"thumbnailUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Video\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sizeInKb\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"duration\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"movieId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"episodeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Movie\",\"kind\":\"object\",\"type\":\"Movie\",\"relationName\":\"MovieToVideo\"},{\"name\":\"episode\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"EpisodeToVideo\"}],\"dbName\":null},\"Content\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"Content_Type_Enum\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Movie\",\"kind\":\"object\",\"type\":\"Movie\",\"relationName\":\"ContentToMovie\"},{\"name\":\"TvShow\",\"kind\":\"object\",\"type\":\"TvShow\",\"relationName\":\"ContentToTvShow\"}],\"dbName\":null},\"Movie\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"contentId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"thumbnailId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Thumbnail\",\"kind\":\"object\",\"type\":\"Thumbnail\",\"relationName\":\"MovieToThumbnail\"},{\"name\":\"Content\",\"kind\":\"object\",\"type\":\"Content\",\"relationName\":\"ContentToMovie\"},{\"name\":\"Video\",\"kind\":\"object\",\"type\":\"Video\",\"relationName\":\"MovieToVideo\"}],\"dbName\":null},\"Thumbnail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Movie\",\"kind\":\"object\",\"type\":\"Movie\",\"relationName\":\"MovieToThumbnail\"},{\"name\":\"TvShow\",\"kind\":\"object\",\"type\":\"TvShow\",\"relationName\":\"ThumbnailToTvShow\"},{\"name\":\"episode\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"EpisodeToThumbnail\"}],\"dbName\":null},\"TvShow\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"contentId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"thumbnailId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Content\",\"kind\":\"object\",\"type\":\"Content\",\"relationName\":\"ContentToTvShow\"},{\"name\":\"Thumbnail\",\"kind\":\"object\",\"type\":\"Thumbnail\",\"relationName\":\"ThumbnailToTvShow\"},{\"name\":\"episode\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"EpisodeToTvShow\"}],\"dbName\":null},\"Episode\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"season\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tvShowId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"thumbnailId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Video\",\"kind\":\"object\",\"type\":\"Video\",\"relationName\":\"EpisodeToVideo\"},{\"name\":\"Thumbnail\",\"kind\":\"object\",\"type\":\"Thumbnail\",\"relationName\":\"EpisodeToThumbnail\"},{\"name\":\"TvShow\",\"kind\":\"object\",\"type\":\"TvShow\",\"relationName\":\"EpisodeToTvShow\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -183,6 +183,56 @@ export interface PrismaClient<
     * ```
     */
   get video(): Prisma.VideoDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.content`: Exposes CRUD operations for the **Content** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Contents
+    * const contents = await prisma.content.findMany()
+    * ```
+    */
+  get content(): Prisma.ContentDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.movie`: Exposes CRUD operations for the **Movie** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Movies
+    * const movies = await prisma.movie.findMany()
+    * ```
+    */
+  get movie(): Prisma.MovieDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.thumbnail`: Exposes CRUD operations for the **Thumbnail** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Thumbnails
+    * const thumbnails = await prisma.thumbnail.findMany()
+    * ```
+    */
+  get thumbnail(): Prisma.ThumbnailDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.tvShow`: Exposes CRUD operations for the **TvShow** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TvShows
+    * const tvShows = await prisma.tvShow.findMany()
+    * ```
+    */
+  get tvShow(): Prisma.TvShowDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.episode`: Exposes CRUD operations for the **Episode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Episodes
+    * const episodes = await prisma.episode.findMany()
+    * ```
+    */
+  get episode(): Prisma.EpisodeDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

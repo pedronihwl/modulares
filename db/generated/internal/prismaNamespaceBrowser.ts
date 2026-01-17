@@ -51,7 +51,12 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Video: 'Video'
+  Video: 'Video',
+  Content: 'Content',
+  Movie: 'Movie',
+  Thumbnail: 'Thumbnail',
+  TvShow: 'TvShow',
+  Episode: 'Episode'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -72,17 +77,81 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const VideoScalarFieldEnum = {
   id: 'id',
-  title: 'title',
-  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
   url: 'url',
   sizeInKb: 'sizeInKb',
   duration: 'duration',
-  thumbnailUrl: 'thumbnailUrl',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  movieId: 'movieId',
+  episodeId: 'episodeId'
 } as const
 
 export type VideoScalarFieldEnum = (typeof VideoScalarFieldEnum)[keyof typeof VideoScalarFieldEnum]
+
+
+export const ContentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  type: 'type',
+  title: 'title',
+  description: 'description'
+} as const
+
+export type ContentScalarFieldEnum = (typeof ContentScalarFieldEnum)[keyof typeof ContentScalarFieldEnum]
+
+
+export const MovieScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  contentId: 'contentId',
+  thumbnailId: 'thumbnailId'
+} as const
+
+export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
+
+
+export const ThumbnailScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  url: 'url'
+} as const
+
+export type ThumbnailScalarFieldEnum = (typeof ThumbnailScalarFieldEnum)[keyof typeof ThumbnailScalarFieldEnum]
+
+
+export const TvShowScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  contentId: 'contentId',
+  thumbnailId: 'thumbnailId'
+} as const
+
+export type TvShowScalarFieldEnum = (typeof TvShowScalarFieldEnum)[keyof typeof TvShowScalarFieldEnum]
+
+
+export const EpisodeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  title: 'title',
+  description: 'description',
+  season: 'season',
+  number: 'number',
+  tvShowId: 'tvShowId',
+  thumbnailId: 'thumbnailId'
+} as const
+
+export type EpisodeScalarFieldEnum = (typeof EpisodeScalarFieldEnum)[keyof typeof EpisodeScalarFieldEnum]
 
 
 export const SortOrder = {

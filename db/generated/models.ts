@@ -9,4 +9,9 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Video'
+export type * from './models/Content'
+export type * from './models/Movie'
+export type * from './models/Thumbnail'
+export type * from './models/TvShow'
+export type * from './models/Episode'
 export type * from './commonInputTypes'

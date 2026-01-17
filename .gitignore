@@ -10,6 +10,8 @@ build/
 .env.local
 .env.*.local
 
+db/generated/
+
 # Database
 .data/
 *.db

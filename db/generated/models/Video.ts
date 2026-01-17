@@ -38,38 +38,38 @@ export type VideoSumAggregateOutputType = {
 
 export type VideoMinAggregateOutputType = {
   id: string | null
-  title: string | null
-  description: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
   url: string | null
   sizeInKb: number | null
   duration: number | null
-  thumbnailUrl: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  movieId: string | null
+  episodeId: string | null
 }
 
 export type VideoMaxAggregateOutputType = {
   id: string | null
-  title: string | null
-  description: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
   url: string | null
   sizeInKb: number | null
   duration: number | null
-  thumbnailUrl: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  movieId: string | null
+  episodeId: string | null
 }
 
 export type VideoCountAggregateOutputType = {
   id: number
-  title: number
-  description: number
+  createdAt: number
+  updatedAt: number
+  deletedAt: number
   url: number
   sizeInKb: number
   duration: number
-  thumbnailUrl: number
-  createdAt: number
-  updatedAt: number
+  movieId: number
+  episodeId: number
   _all: number
 }
 
@@ -86,38 +86,38 @@ export type VideoSumAggregateInputType = {
 
 export type VideoMinAggregateInputType = {
   id?: true
-  title?: true
-  description?: true
+  createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
   url?: true
   sizeInKb?: true
   duration?: true
-  thumbnailUrl?: true
-  createdAt?: true
-  updatedAt?: true
+  movieId?: true
+  episodeId?: true
 }
 
 export type VideoMaxAggregateInputType = {
   id?: true
-  title?: true
-  description?: true
+  createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
   url?: true
   sizeInKb?: true
   duration?: true
-  thumbnailUrl?: true
-  createdAt?: true
-  updatedAt?: true
+  movieId?: true
+  episodeId?: true
 }
 
 export type VideoCountAggregateInputType = {
   id?: true
-  title?: true
-  description?: true
+  createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
   url?: true
   sizeInKb?: true
   duration?: true
-  thumbnailUrl?: true
-  createdAt?: true
-  updatedAt?: true
+  movieId?: true
+  episodeId?: true
   _all?: true
 }
 
@@ -209,14 +209,14 @@ export type VideoGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type VideoGroupByOutputType = {
   id: string
-  title: string
-  description: string
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
   url: string
   sizeInKb: number
   duration: number
-  thumbnailUrl: string | null
-  createdAt: Date
-  updatedAt: Date
+  movieId: string | null
+  episodeId: string | null
   _count: VideoCountAggregateOutputType | null
   _avg: VideoAvgAggregateOutputType | null
   _sum: VideoSumAggregateOutputType | null
@@ -243,54 +243,60 @@ export type VideoWhereInput = {
   AND?: Prisma.VideoWhereInput | Prisma.VideoWhereInput[]
   OR?: Prisma.VideoWhereInput[]
   NOT?: Prisma.VideoWhereInput | Prisma.VideoWhereInput[]
-  id?: Prisma.StringFilter<"Video"> | string
-  title?: Prisma.StringFilter<"Video"> | string
-  description?: Prisma.StringFilter<"Video"> | string
+  id?: Prisma.UuidFilter<"Video"> | string
+  createdAt?: Prisma.DateTimeFilter<"Video"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Video"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Video"> | Date | string | null
   url?: Prisma.StringFilter<"Video"> | string
   sizeInKb?: Prisma.IntFilter<"Video"> | number
   duration?: Prisma.IntFilter<"Video"> | number
-  thumbnailUrl?: Prisma.StringNullableFilter<"Video"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Video"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Video"> | Date | string
+  movieId?: Prisma.UuidNullableFilter<"Video"> | string | null
+  episodeId?: Prisma.UuidNullableFilter<"Video"> | string | null
+  Movie?: Prisma.XOR<Prisma.MovieNullableScalarRelationFilter, Prisma.MovieWhereInput> | null
+  episode?: Prisma.XOR<Prisma.EpisodeNullableScalarRelationFilter, Prisma.EpisodeWhereInput> | null
 }
 
 export type VideoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrder
   sizeInKb?: Prisma.SortOrder
   duration?: Prisma.SortOrder
-  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  movieId?: Prisma.SortOrderInput | Prisma.SortOrder
+  episodeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  Movie?: Prisma.MovieOrderByWithRelationInput
+  episode?: Prisma.EpisodeOrderByWithRelationInput
 }
 
 export type VideoWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  movieId?: string
+  episodeId?: string
   AND?: Prisma.VideoWhereInput | Prisma.VideoWhereInput[]
   OR?: Prisma.VideoWhereInput[]
   NOT?: Prisma.VideoWhereInput | Prisma.VideoWhereInput[]
-  title?: Prisma.StringFilter<"Video"> | string
-  description?: Prisma.StringFilter<"Video"> | string
+  createdAt?: Prisma.DateTimeFilter<"Video"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Video"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Video"> | Date | string | null
   url?: Prisma.StringFilter<"Video"> | string
   sizeInKb?: Prisma.IntFilter<"Video"> | number
   duration?: Prisma.IntFilter<"Video"> | number
-  thumbnailUrl?: Prisma.StringNullableFilter<"Video"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Video"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Video"> | Date | string
-}, "id">
+  Movie?: Prisma.XOR<Prisma.MovieNullableScalarRelationFilter, Prisma.MovieWhereInput> | null
+  episode?: Prisma.XOR<Prisma.EpisodeNullableScalarRelationFilter, Prisma.EpisodeWhereInput> | null
+}, "id" | "movieId" | "episodeId">
 
 export type VideoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrder
   sizeInKb?: Prisma.SortOrder
   duration?: Prisma.SortOrder
-  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  movieId?: Prisma.SortOrderInput | Prisma.SortOrder
+  episodeId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.VideoCountOrderByAggregateInput
   _avg?: Prisma.VideoAvgOrderByAggregateInput
   _max?: Prisma.VideoMaxOrderByAggregateInput
@@ -302,111 +308,109 @@ export type VideoScalarWhereWithAggregatesInput = {
   AND?: Prisma.VideoScalarWhereWithAggregatesInput | Prisma.VideoScalarWhereWithAggregatesInput[]
   OR?: Prisma.VideoScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VideoScalarWhereWithAggregatesInput | Prisma.VideoScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Video"> | string
-  title?: Prisma.StringWithAggregatesFilter<"Video"> | string
-  description?: Prisma.StringWithAggregatesFilter<"Video"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"Video"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Video"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Video"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Video"> | Date | string | null
   url?: Prisma.StringWithAggregatesFilter<"Video"> | string
   sizeInKb?: Prisma.IntWithAggregatesFilter<"Video"> | number
   duration?: Prisma.IntWithAggregatesFilter<"Video"> | number
-  thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Video"> | string | null
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Video"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Video"> | Date | string
+  movieId?: Prisma.UuidNullableWithAggregatesFilter<"Video"> | string | null
+  episodeId?: Prisma.UuidNullableWithAggregatesFilter<"Video"> | string | null
 }
 
 export type VideoCreateInput = {
   id: string
-  title: string
-  description: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
   url: string
   sizeInKb: number
   duration: number
-  thumbnailUrl?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  Movie?: Prisma.MovieCreateNestedOneWithoutVideoInput
+  episode?: Prisma.EpisodeCreateNestedOneWithoutVideoInput
 }
 
 export type VideoUncheckedCreateInput = {
   id: string
-  title: string
-  description: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
   url: string
   sizeInKb: number
   duration: number
-  thumbnailUrl?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  movieId?: string | null
+  episodeId?: string | null
 }
 
 export type VideoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
   duration?: Prisma.IntFieldUpdateOperationsInput | number
-  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Movie?: Prisma.MovieUpdateOneWithoutVideoNestedInput
+  episode?: Prisma.EpisodeUpdateOneWithoutVideoNestedInput
 }
 
 export type VideoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
   duration?: Prisma.IntFieldUpdateOperationsInput | number
-  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  movieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  episodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type VideoCreateManyInput = {
   id: string
-  title: string
-  description: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
   url: string
   sizeInKb: number
   duration: number
-  thumbnailUrl?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  movieId?: string | null
+  episodeId?: string | null
 }
 
 export type VideoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
   duration?: Prisma.IntFieldUpdateOperationsInput | number
-  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VideoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
   duration?: Prisma.IntFieldUpdateOperationsInput | number
-  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  movieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  episodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type VideoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   sizeInKb?: Prisma.SortOrder
   duration?: Prisma.SortOrder
-  thumbnailUrl?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  movieId?: Prisma.SortOrder
+  episodeId?: Prisma.SortOrder
 }
 
 export type VideoAvgOrderByAggregateInput = {
@@ -416,26 +420,26 @@ export type VideoAvgOrderByAggregateInput = {
 
 export type VideoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   sizeInKb?: Prisma.SortOrder
   duration?: Prisma.SortOrder
-  thumbnailUrl?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  movieId?: Prisma.SortOrder
+  episodeId?: Prisma.SortOrder
 }
 
 export type VideoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   sizeInKb?: Prisma.SortOrder
   duration?: Prisma.SortOrder
-  thumbnailUrl?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  movieId?: Prisma.SortOrder
+  episodeId?: Prisma.SortOrder
 }
 
 export type VideoSumOrderByAggregateInput = {
@@ -443,8 +447,21 @@ export type VideoSumOrderByAggregateInput = {
   duration?: Prisma.SortOrder
 }
 
+export type VideoNullableScalarRelationFilter = {
+  is?: Prisma.VideoWhereInput | null
+  isNot?: Prisma.VideoWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -459,75 +476,276 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type VideoCreateNestedOneWithoutMovieInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutMovieInput, Prisma.VideoUncheckedCreateWithoutMovieInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutMovieInput
+  connect?: Prisma.VideoWhereUniqueInput
+}
+
+export type VideoUncheckedCreateNestedOneWithoutMovieInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutMovieInput, Prisma.VideoUncheckedCreateWithoutMovieInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutMovieInput
+  connect?: Prisma.VideoWhereUniqueInput
+}
+
+export type VideoUpdateOneWithoutMovieNestedInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutMovieInput, Prisma.VideoUncheckedCreateWithoutMovieInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutMovieInput
+  upsert?: Prisma.VideoUpsertWithoutMovieInput
+  disconnect?: Prisma.VideoWhereInput | boolean
+  delete?: Prisma.VideoWhereInput | boolean
+  connect?: Prisma.VideoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VideoUpdateToOneWithWhereWithoutMovieInput, Prisma.VideoUpdateWithoutMovieInput>, Prisma.VideoUncheckedUpdateWithoutMovieInput>
+}
+
+export type VideoUncheckedUpdateOneWithoutMovieNestedInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutMovieInput, Prisma.VideoUncheckedCreateWithoutMovieInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutMovieInput
+  upsert?: Prisma.VideoUpsertWithoutMovieInput
+  disconnect?: Prisma.VideoWhereInput | boolean
+  delete?: Prisma.VideoWhereInput | boolean
+  connect?: Prisma.VideoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VideoUpdateToOneWithWhereWithoutMovieInput, Prisma.VideoUpdateWithoutMovieInput>, Prisma.VideoUncheckedUpdateWithoutMovieInput>
+}
+
+export type VideoCreateNestedOneWithoutEpisodeInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutEpisodeInput, Prisma.VideoUncheckedCreateWithoutEpisodeInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutEpisodeInput
+  connect?: Prisma.VideoWhereUniqueInput
+}
+
+export type VideoUncheckedCreateNestedOneWithoutEpisodeInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutEpisodeInput, Prisma.VideoUncheckedCreateWithoutEpisodeInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutEpisodeInput
+  connect?: Prisma.VideoWhereUniqueInput
+}
+
+export type VideoUpdateOneWithoutEpisodeNestedInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutEpisodeInput, Prisma.VideoUncheckedCreateWithoutEpisodeInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutEpisodeInput
+  upsert?: Prisma.VideoUpsertWithoutEpisodeInput
+  disconnect?: Prisma.VideoWhereInput | boolean
+  delete?: Prisma.VideoWhereInput | boolean
+  connect?: Prisma.VideoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VideoUpdateToOneWithWhereWithoutEpisodeInput, Prisma.VideoUpdateWithoutEpisodeInput>, Prisma.VideoUncheckedUpdateWithoutEpisodeInput>
+}
+
+export type VideoUncheckedUpdateOneWithoutEpisodeNestedInput = {
+  create?: Prisma.XOR<Prisma.VideoCreateWithoutEpisodeInput, Prisma.VideoUncheckedCreateWithoutEpisodeInput>
+  connectOrCreate?: Prisma.VideoCreateOrConnectWithoutEpisodeInput
+  upsert?: Prisma.VideoUpsertWithoutEpisodeInput
+  disconnect?: Prisma.VideoWhereInput | boolean
+  delete?: Prisma.VideoWhereInput | boolean
+  connect?: Prisma.VideoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VideoUpdateToOneWithWhereWithoutEpisodeInput, Prisma.VideoUpdateWithoutEpisodeInput>, Prisma.VideoUncheckedUpdateWithoutEpisodeInput>
+}
+
+export type VideoCreateWithoutMovieInput = {
+  id: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  url: string
+  sizeInKb: number
+  duration: number
+  episode?: Prisma.EpisodeCreateNestedOneWithoutVideoInput
+}
+
+export type VideoUncheckedCreateWithoutMovieInput = {
+  id: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  url: string
+  sizeInKb: number
+  duration: number
+  episodeId?: string | null
+}
+
+export type VideoCreateOrConnectWithoutMovieInput = {
+  where: Prisma.VideoWhereUniqueInput
+  create: Prisma.XOR<Prisma.VideoCreateWithoutMovieInput, Prisma.VideoUncheckedCreateWithoutMovieInput>
+}
+
+export type VideoUpsertWithoutMovieInput = {
+  update: Prisma.XOR<Prisma.VideoUpdateWithoutMovieInput, Prisma.VideoUncheckedUpdateWithoutMovieInput>
+  create: Prisma.XOR<Prisma.VideoCreateWithoutMovieInput, Prisma.VideoUncheckedCreateWithoutMovieInput>
+  where?: Prisma.VideoWhereInput
+}
+
+export type VideoUpdateToOneWithWhereWithoutMovieInput = {
+  where?: Prisma.VideoWhereInput
+  data: Prisma.XOR<Prisma.VideoUpdateWithoutMovieInput, Prisma.VideoUncheckedUpdateWithoutMovieInput>
+}
+
+export type VideoUpdateWithoutMovieInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
+  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  episode?: Prisma.EpisodeUpdateOneWithoutVideoNestedInput
+}
+
+export type VideoUncheckedUpdateWithoutMovieInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
+  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  episodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type VideoCreateWithoutEpisodeInput = {
+  id: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  url: string
+  sizeInKb: number
+  duration: number
+  Movie?: Prisma.MovieCreateNestedOneWithoutVideoInput
+}
+
+export type VideoUncheckedCreateWithoutEpisodeInput = {
+  id: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  url: string
+  sizeInKb: number
+  duration: number
+  movieId?: string | null
+}
+
+export type VideoCreateOrConnectWithoutEpisodeInput = {
+  where: Prisma.VideoWhereUniqueInput
+  create: Prisma.XOR<Prisma.VideoCreateWithoutEpisodeInput, Prisma.VideoUncheckedCreateWithoutEpisodeInput>
+}
+
+export type VideoUpsertWithoutEpisodeInput = {
+  update: Prisma.XOR<Prisma.VideoUpdateWithoutEpisodeInput, Prisma.VideoUncheckedUpdateWithoutEpisodeInput>
+  create: Prisma.XOR<Prisma.VideoCreateWithoutEpisodeInput, Prisma.VideoUncheckedCreateWithoutEpisodeInput>
+  where?: Prisma.VideoWhereInput
+}
+
+export type VideoUpdateToOneWithWhereWithoutEpisodeInput = {
+  where?: Prisma.VideoWhereInput
+  data: Prisma.XOR<Prisma.VideoUpdateWithoutEpisodeInput, Prisma.VideoUncheckedUpdateWithoutEpisodeInput>
+}
+
+export type VideoUpdateWithoutEpisodeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
+  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  Movie?: Prisma.MovieUpdateOneWithoutVideoNestedInput
+}
+
+export type VideoUncheckedUpdateWithoutEpisodeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeInKb?: Prisma.IntFieldUpdateOperationsInput | number
+  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  movieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
 
 export type VideoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
-  description?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   url?: boolean
   sizeInKb?: boolean
   duration?: boolean
-  thumbnailUrl?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  movieId?: boolean
+  episodeId?: boolean
+  Movie?: boolean | Prisma.Video$MovieArgs<ExtArgs>
+  episode?: boolean | Prisma.Video$episodeArgs<ExtArgs>
 }, ExtArgs["result"]["video"]>
 
 export type VideoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
-  description?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   url?: boolean
   sizeInKb?: boolean
   duration?: boolean
-  thumbnailUrl?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  movieId?: boolean
+  episodeId?: boolean
+  Movie?: boolean | Prisma.Video$MovieArgs<ExtArgs>
+  episode?: boolean | Prisma.Video$episodeArgs<ExtArgs>
 }, ExtArgs["result"]["video"]>
 
 export type VideoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
-  description?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   url?: boolean
   sizeInKb?: boolean
   duration?: boolean
-  thumbnailUrl?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  movieId?: boolean
+  episodeId?: boolean
+  Movie?: boolean | Prisma.Video$MovieArgs<ExtArgs>
+  episode?: boolean | Prisma.Video$episodeArgs<ExtArgs>
 }, ExtArgs["result"]["video"]>
 
 export type VideoSelectScalar = {
   id?: boolean
-  title?: boolean
-  description?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   url?: boolean
   sizeInKb?: boolean
   duration?: boolean
-  thumbnailUrl?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  movieId?: boolean
+  episodeId?: boolean
 }
 
-export type VideoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "url" | "sizeInKb" | "duration" | "thumbnailUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["video"]>
+export type VideoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "deletedAt" | "url" | "sizeInKb" | "duration" | "movieId" | "episodeId", ExtArgs["result"]["video"]>
+export type VideoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  Movie?: boolean | Prisma.Video$MovieArgs<ExtArgs>
+  episode?: boolean | Prisma.Video$episodeArgs<ExtArgs>
+}
+export type VideoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  Movie?: boolean | Prisma.Video$MovieArgs<ExtArgs>
+  episode?: boolean | Prisma.Video$episodeArgs<ExtArgs>
+}
+export type VideoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  Movie?: boolean | Prisma.Video$MovieArgs<ExtArgs>
+  episode?: boolean | Prisma.Video$episodeArgs<ExtArgs>
+}
 
 export type $VideoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Video"
-  objects: {}
+  objects: {
+    Movie: Prisma.$MoviePayload<ExtArgs> | null
+    episode: Prisma.$EpisodePayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    title: string
-    description: string
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
     url: string
     sizeInKb: number
     duration: number
-    thumbnailUrl: string | null
-    createdAt: Date
-    updatedAt: Date
+    movieId: string | null
+    episodeId: string | null
   }, ExtArgs["result"]["video"]>
   composites: {}
 }
@@ -922,6 +1140,8 @@ readonly fields: VideoFieldRefs;
  */
 export interface Prisma__VideoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  Movie<T extends Prisma.Video$MovieArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Video$MovieArgs<ExtArgs>>): Prisma.Prisma__MovieClient<runtime.Types.Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  episode<T extends Prisma.Video$episodeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Video$episodeArgs<ExtArgs>>): Prisma.Prisma__EpisodeClient<runtime.Types.Result.GetResult<Prisma.$EpisodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -952,14 +1172,14 @@ export interface Prisma__VideoClient<T, Null = never, ExtArgs extends runtime.Ty
  */
 export interface VideoFieldRefs {
   readonly id: Prisma.FieldRef<"Video", 'String'>
-  readonly title: Prisma.FieldRef<"Video", 'String'>
-  readonly description: Prisma.FieldRef<"Video", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Video", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Video", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Video", 'DateTime'>
   readonly url: Prisma.FieldRef<"Video", 'String'>
   readonly sizeInKb: Prisma.FieldRef<"Video", 'Int'>
   readonly duration: Prisma.FieldRef<"Video", 'Int'>
-  readonly thumbnailUrl: Prisma.FieldRef<"Video", 'String'>
-  readonly createdAt: Prisma.FieldRef<"Video", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Video", 'DateTime'>
+  readonly movieId: Prisma.FieldRef<"Video", 'String'>
+  readonly episodeId: Prisma.FieldRef<"Video", 'String'>
 }
     
 
@@ -976,6 +1196,10 @@ export type VideoFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Video
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
   /**
    * Filter, which Video to fetch.
    */
@@ -995,6 +1219,10 @@ export type VideoFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
+  /**
    * Filter, which Video to fetch.
    */
   where: Prisma.VideoWhereUniqueInput
@@ -1012,6 +1240,10 @@ export type VideoFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Video
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
   /**
    * Filter, which Video to fetch.
    */
@@ -1061,6 +1293,10 @@ export type VideoFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
+  /**
    * Filter, which Video to fetch.
    */
   where?: Prisma.VideoWhereInput
@@ -1109,6 +1345,10 @@ export type VideoFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
+  /**
    * Filter, which Videos to fetch.
    */
   where?: Prisma.VideoWhereInput
@@ -1152,6 +1392,10 @@ export type VideoCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
+  /**
    * The data needed to create a Video.
    */
   data: Prisma.XOR<Prisma.VideoCreateInput, Prisma.VideoUncheckedCreateInput>
@@ -1185,6 +1429,10 @@ export type VideoCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    */
   data: Prisma.VideoCreateManyInput | Prisma.VideoCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1199,6 +1447,10 @@ export type VideoUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Video
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
   /**
    * The data needed to update a Video.
    */
@@ -1251,6 +1503,10 @@ export type VideoUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Videos to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1265,6 +1521,10 @@ export type VideoUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Video
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
   /**
    * The filter to search for the Video to update in case it exists.
    */
@@ -1292,6 +1552,10 @@ export type VideoDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
+  /**
    * Filter which Video to delete.
    */
   where: Prisma.VideoWhereUniqueInput
@@ -1312,6 +1576,44 @@ export type VideoDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Video.Movie
+ */
+export type Video$MovieArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Movie
+   */
+  select?: Prisma.MovieSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Movie
+   */
+  omit?: Prisma.MovieOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MovieInclude<ExtArgs> | null
+  where?: Prisma.MovieWhereInput
+}
+
+/**
+ * Video.episode
+ */
+export type Video$episodeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Episode
+   */
+  select?: Prisma.EpisodeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Episode
+   */
+  omit?: Prisma.EpisodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EpisodeInclude<ExtArgs> | null
+  where?: Prisma.EpisodeWhereInput
+}
+
+/**
  * Video without action
  */
 export type VideoDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1323,4 +1625,8 @@ export type VideoDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Video
    */
   omit?: Prisma.VideoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoInclude<ExtArgs> | null
 }

@@ -22,3 +22,28 @@ export * from './enums';
  * 
  */
 export type Video = Prisma.VideoModel
+/**
+ * Model Content
+ * 
+ */
+export type Content = Prisma.ContentModel
+/**
+ * Model Movie
+ * 
+ */
+export type Movie = Prisma.MovieModel
+/**
+ * Model Thumbnail
+ * 
+ */
+export type Thumbnail = Prisma.ThumbnailModel
+/**
+ * Model TvShow
+ * 
+ */
+export type TvShow = Prisma.TvShowModel
+/**
+ * Model Episode
+ * 
+ */
+export type Episode = Prisma.EpisodeModel
