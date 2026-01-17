@@ -2,7 +2,7 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Prisma } from '@prisma/client';
 import { AppModule } from '@src/app.module';
-import { PrismaService } from '@src/services/prisma-service';
+import { PrismaService } from '@src/persistence/prisma-service';
 import * as dotenv from 'dotenv';
 
 import fs from 'fs';
