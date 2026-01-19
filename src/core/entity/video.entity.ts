@@ -13,12 +13,15 @@ export interface VideoEntityProps extends BaseEntityProps {
 }
 
 export class VideoEntity extends BaseEntity {
-    private url: VideoEntityProps['url'];
-    private sizeInKb: VideoEntityProps['sizeInKb'];
-    private duration: VideoEntityProps['duration'];
+    protected url: VideoEntityProps['url'];
+    protected sizeInKb: VideoEntityProps['sizeInKb'];
+    protected duration: VideoEntityProps['duration'];
 
     private constructor(data: VideoEntityProps) {
         super(data);
+        this.url = data.url;
+        this.sizeInKb = data.sizeInKb;
+        this.duration = data.duration;
     }
 
     static createNew(data: NewVideoEntity, id = randomUUID()): VideoEntity {

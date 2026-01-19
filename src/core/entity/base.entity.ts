@@ -10,7 +10,9 @@ export abstract class BaseEntity {
     protected updatedAt: BaseEntityProps['updatedAt'];
 
     constructor(parameters: BaseEntityProps) {
-        Object.assign(this, parameters)
+        this.id = parameters.id;
+        this.createdAt = parameters.createdAt;
+        this.updatedAt = parameters.updatedAt;
     }
 
     abstract serialize(): Record<string, unknown>;

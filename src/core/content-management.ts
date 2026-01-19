@@ -1,43 +1,46 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "@src/persistence/prisma-service";
-import { randomUUID } from "crypto";
+import { ContentRepository } from "@src/persistence/repository/content.repository";
+import { ContentEntity, ContentType } from "./entity/content.entity";
+import { MovieEntity } from "./entity/movie.entity";
+import { VideoEntity } from "./entity/video.entity";
+import { ThumbnailEntity } from "./entity/thumbnail.entity";
 
 
-interface BodyVideoDto {
-    id: string,
-    title: string,
-    description: string,
-    url: string,
-    sizeInKb: number,
-    duration: number,
-    thumbnailUrl: string,
-    createdAt: Date,
-    updatedAt: Date,
+interface CreateContentDto {
+  title: string;
+  description: string;
+  url: string;
+  thumbnailUrl: string;
+  sizeInKb: number;
 }
 
 @Injectable()
 export class ContentManagementService {
 
-    constructor(private readonly prismaService: PrismaService){
+  constructor(private readonly contentRepository: ContentRepository) {
 
-    }
+  }
 
-    async addVideo(dto: BodyVideoDto){
-        const video = await this.prismaService.video.create({
-            data: {
-              id: randomUUID(),
-              title: dto.title,
-              description: dto.description,
-              url: dto.url,
-              sizeInKb: dto.sizeInKb,
-              duration: dto.duration,
-              thumbnailUrl: dto.thumbnailUrl,
-              createdAt: dto.createdAt,
-              updatedAt: dto.updatedAt
-            }
-          });
+  async createContent(
+    createContentData: CreateContentDto,
+  ): Promise<ContentEntity> {
+    const content = ContentEntity.createNew({
+      title: createContentData.title,
+      description: createContentData.description,
+      type: ContentType.MOVIE,
+      media: MovieEntity.createNew({
+        video: VideoEntity.createNew({
+          url: createContentData.url,
+          sizeInKb: createContentData.sizeInKb,
+          duration: 100,
+        }),
+        thumbnail: ThumbnailEntity.createNew({
+          url: createContentData.thumbnailUrl,
+        }),
+      }),
+    });
 
-          return video;
-
-    }
+    await this.contentRepository.create(content);
+    return content;
+  }
 }

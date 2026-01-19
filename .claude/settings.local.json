@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx @nestjs/cli new . --package-manager npm --skip-git)",
       "Bash(npm install:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm run test:e2e:*)"
     ],
     "deny": [],
     "ask": []

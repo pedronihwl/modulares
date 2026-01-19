@@ -17,13 +17,17 @@ export const ContentType: { [x: string]: 'MOVIE' | 'TV_SHOW' } = {
 export type ContentType = (typeof ContentType)[keyof typeof ContentType];
 
 export class ContentEntity extends BaseEntity {
-    private media?: ContentEntityProps['media'];
-    private type: ContentEntityProps['type'];
-    private title: ContentEntityProps['title'];
-    private description: ContentEntityProps['description'];
+    protected media?: ContentEntityProps['media'];
+    protected type: ContentEntityProps['type'];
+    protected title: ContentEntityProps['title'];
+    protected description: ContentEntityProps['description'];
 
     private constructor(data: ContentEntityProps) {
         super(data);
+        this.media = data.media;
+        this.type = data.type;
+        this.title = data.title;
+        this.description = data.description;
     }
 
     static createNew(

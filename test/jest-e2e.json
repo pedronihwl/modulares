@@ -1,8 +1,10 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": "..",
+  "setupFiles": ["<rootDir>/test/setup.ts"],
   "moduleNameMapper": {
-    "^@src/(.*)$": "<rootDir>/src/$1"
+    "^@src/(.*)$": "<rootDir>/src/$1",
+    "^db/(.*)$": "<rootDir>/db/$1"
   },
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",

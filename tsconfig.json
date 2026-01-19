@@ -23,7 +23,8 @@
     "outDir": "./dist",
     "paths": {
       "@src/*": ["./src/*"],
-      "@resource/*": ["./resource/*"]
+      "@resource/*": ["./resource/*"],
+      "db/*": ["./db/*"]
     },
     "removeComments": true,
     "resolveJsonModule": true,

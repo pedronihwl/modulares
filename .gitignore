@@ -10,7 +10,6 @@ build/
 .env.local
 .env.*.local
 
-db/generated/
 
 # Database
 .data/
@@ -46,3 +45,6 @@ uploads/
 # Temporary files
 *.tmp
 .cache/
+
+# Prisma generated
+db/generated/

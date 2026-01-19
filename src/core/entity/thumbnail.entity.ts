@@ -6,10 +6,11 @@ export interface ThumbnailEntityProps extends BaseEntityProps {
 }
 
 export class ThumbnailEntity extends BaseEntity {
-  private url: ThumbnailEntityProps['url'];
+  protected url: ThumbnailEntityProps['url'];
 
   private constructor(data: ThumbnailEntityProps) {
     super(data);
+    this.url = data.url;
   }
 
   static createNew(

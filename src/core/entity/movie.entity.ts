@@ -9,11 +9,13 @@ export interface MovieEntityProps extends BaseEntityProps {
 }
 
 export class MovieEntity extends BaseEntity {
-    private video: MovieEntityProps['video'];
-    private thumbnail?: MovieEntityProps['thumbnail'];
+    protected video: MovieEntityProps['video'];
+    protected thumbnail?: MovieEntityProps['thumbnail'];
 
     private constructor(data: MovieEntityProps) {
         super(data);
+        this.video = data.video;
+        this.thumbnail = data.thumbnail;
     }
 
     static createNew(
