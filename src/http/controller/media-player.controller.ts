@@ -1,16 +1,16 @@
 import { Controller, Get, Header, HttpStatus, Param, Req, Res } from "@nestjs/common";
 import { ApiHeader, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { MediaPlayerService } from "@src/core/media-player";
 import { Request, Response } from 'express';
 
 import path from "path";
 import fs from 'fs';
 import { VideoNotFoundException } from "@src/core/exceptions/video-not-found.exceptions";
+import { MediaPlayerService } from "@src/core/service/media-player.service";
 
 @ApiTags('Streaming')
 @Controller('stream')
 export class MediaController {
-    constructor(private readonly prepareVideoService: MediaPlayerService) {
+    constructor(private readonly mediaPlayerService: MediaPlayerService) {
 
     }
 
@@ -71,7 +71,7 @@ export class MediaController {
         @Res() _res: Response) {
 
         try {
-            const url = await this.prepareVideoService.prepareStreaming(id);
+            const url = await this.mediaPlayerService.prepareStreaming(id);
             const videoPath = path.join('.', url);
             const fileSize = fs.statSync(videoPath).size;
 
@@ -102,6 +102,7 @@ export class MediaController {
 
             const videoStream = fs.createReadStream(videoPath);
             return videoStream.pipe(_res);
+
         } catch (error) {
             if (error instanceof VideoNotFoundException) {
                 return _res.status(HttpStatus.NOT_FOUND).send({

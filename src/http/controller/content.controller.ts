@@ -3,10 +3,10 @@ import { ApiTags, ApiOperation, ApiConsumes, ApiBody, ApiResponse} from '@nestjs
 import { diskStorage } from 'multer';
 import { randomUUID } from 'crypto';
 import { extname } from 'path';
-import { ContentManagementService } from '@src/core/content-management';
 import { CreateVideoResponseDto } from './dto/response/create-video';
 import { RestResponseInterceptor } from './interceptors/rest-response';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ContentManagementService } from '@src/core/service/content-managment.service';
 
 @ApiTags('Content')
 @Controller('content')
@@ -97,41 +97,56 @@ export class ContentController {
     new RestResponseInterceptor(CreateVideoResponseDto)
   )
   async uploadVideo(
-    @Body() body: { title: string; description: string },
+    @Body() contentData: {
+      title: string;
+      description: string;
+    },
     @UploadedFiles()
     files: { video?: Express.Multer.File[], thumbnail?: Express.Multer.File[] }): Promise<CreateVideoResponseDto> {
 
-    const videoFile = files.video?.[0];
-    const thumbnailFile = files.thumbnail?.[0];
-
-    if (!videoFile) {
-      throw new BadRequestException("Video file is required");
-    }
-
-    if (!thumbnailFile) {
-      throw new BadRequestException("Thumbnail file is required");
-    }
-
-    const createdContent = await this.contentManagementService.createContent({
-      title: body.title,
-      description: body.description,
-      url: videoFile.path,
-      thumbnailUrl: thumbnailFile.path,
-      sizeInKb: videoFile.size
-    });
-
-    const video = createdContent.getMedia()?.getVideo();
-    if (!video) {
-      throw new BadRequestException('Video must be present');
-    }
-
-    return {
-      id: createdContent.getId(),
-      title: createdContent.getTitle(),
-      description: createdContent.getDescription(),
-      url: video.getUrl(),
-      createdAt: createdContent.getCreatedAt(),
-      updatedAt: createdContent.getUpdatedAt(),
-    };
+      const videoFile = files.video?.[0];
+      const thumbnailFile = files.thumbnail?.[0];
+  
+      if (!videoFile || !thumbnailFile) {
+        throw new BadRequestException(
+          'Both video and thumbnail files are required.',
+        );
+      }
+  
+      const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1 gigabyte
+  
+      if (videoFile.size > MAX_FILE_SIZE) {
+        throw new BadRequestException('File size exceeds the limit.');
+      }
+      const MAX_THUMBNAIL_SIZE = 1024 * 1024 * 10; // 10 megabytes
+  
+      if (thumbnailFile.size > MAX_THUMBNAIL_SIZE) {
+        throw new BadRequestException('Thumbnail size exceeds the limit.');
+      }
+  
+      if (!videoFile || !thumbnailFile) {
+        throw new BadRequestException(
+          'Both video and thumbnail files are required.',
+        );
+      }
+  
+      const createdMovie = await this.contentManagementService.createMovie({
+        title: contentData.title,
+        description: contentData.description,
+        url: videoFile.path,
+        thumbnailUrl: thumbnailFile.path,
+        sizeInKb: videoFile.size,
+      });
+      return {
+        id: createdMovie.id,
+        title: createdMovie.title,
+        description: createdMovie.description,
+        url: createdMovie.movie.video.url,
+        thumbnailUrl: createdMovie.movie.thumbnail?.url,
+        sizeInKb: createdMovie.movie.video.sizeInKb,
+        duration: createdMovie.movie.video.duration,
+        createdAt: createdMovie.createdAt,
+        updatedAt: createdMovie.updatedAt,
+      };
   }
 }
