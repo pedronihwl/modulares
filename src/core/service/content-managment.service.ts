@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ContentType } from '@src/core/enum/content-type.enum';
+import { ExternalMovieClient } from '@src/http/client/external-movie-rating.client';
 import { Content } from '@src/persistence/entity/content.entity';
 import { Movie } from '@src/persistence/entity/movie.entity';
 import { Thumbnail } from '@src/persistence/entity/thumbnail.entity';
@@ -16,16 +17,22 @@ export interface CreateMovieData {
 
 @Injectable()
 export class ContentManagementService {
-  constructor(private readonly contentRepository: ContentRepository) {}
+  constructor(
+    private readonly contentRepository: ContentRepository, 
+    private readonly externalClient: ExternalMovieClient
+  ) { }
 
   async createMovie(createMovieData: CreateMovieData): Promise<Content> {
+    const externalRating = await this.externalClient.getRating(createMovieData.title)
+
     const video = new Video({
       url: createMovieData.url,
       duration: 10,
       sizeInKb: createMovieData.sizeInKb,
     });
 
-    const movieData: any = {
+    const movieData: Partial<Movie> = {
+      externalRating: externalRating,
       video: video
     };
 
