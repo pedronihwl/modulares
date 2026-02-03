@@ -56,10 +56,10 @@ describe('ContentController (e2e)', () => {
         description: 'This is a test video',
         url: './test/fixtures/sample.mp4',
         thumbnailUrl: './test/fixtures/sample.jpg',
-        sizeInKb: 1430145,
+        sizeInKb: 18347,
       });
 
-      const fileSize = 1430145;
+      const fileSize = 18347;
       const range = `bytes=0-${fileSize - 1}`;
 
       const response = await request(app.getHttpServer())

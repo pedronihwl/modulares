@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpCode, HttpStatus, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, HttpCode, HttpStatus, Post, Req, UploadedFiles, UseFilters, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiConsumes, ApiBody, ApiResponse} from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { randomUUID } from 'crypto';
@@ -7,6 +7,7 @@ import { CreateVideoResponseDto } from './dto/response/create-video';
 import { RestResponseInterceptor } from './interceptors/rest-response';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ContentManagementService } from '@src/core/service/content-managment.service';
+import { MulterExceptionFilter } from '../filters/multer-exception.filter';
 
 @ApiTags('Content')
 @Controller('content')
@@ -14,6 +15,8 @@ export class ContentController {
   constructor(private readonly contentManagementService: ContentManagementService) { }
 
   @Post("video")
+  // Precisei fazer isso por que o Multer estava retornando ECONNRESET
+  @UseFilters(MulterExceptionFilter)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Upload de vídeo',
@@ -84,12 +87,13 @@ export class ContentController {
             return cb(null, `${Date.now()}-${randomUUID()}${extname(file.originalname)}`)
           }
         }),
-        fileFilter: (_req, file, cb) => {
-          if (file.fieldname === 'video' && file.mimetype !== "video/mp4") {
-            return cb(new BadRequestException("Invalid file type. Only video/mp4 and image/jpeg are supported."), false);
-          }
-          if (file.fieldname === 'thumbnail' && file.mimetype !== "image/jpeg") {
-            return cb(new BadRequestException("Invalid file type. Only video/mp4 and image/jpeg are supported."), false);
+        fileFilter: (req: any, file, cb) => {
+          // Don't reject here - just mark as invalid and handle in controller
+          if (file.mimetype !== 'video/mp4' && file.mimetype !== 'image/jpeg') {
+            // Mark that a file was rejected due to invalid type
+            req.invalidFileType = true;
+            // Pass null to not store the file
+            return cb(null, false);
           }
           return cb(null, true);
         }
@@ -102,12 +106,20 @@ export class ContentController {
       description: string;
     },
     @UploadedFiles()
-    files: { video?: Express.Multer.File[], thumbnail?: Express.Multer.File[] }): Promise<CreateVideoResponseDto> {
+    files: { video?: Express.Multer.File[], thumbnail?: Express.Multer.File[] },
+    @Req() req: any): Promise<CreateVideoResponseDto> {
 
       const videoFile = files.video?.[0];
       const thumbnailFile = files.thumbnail?.[0];
-  
+
+      // If files were filtered out due to invalid type, they won't be in the files object
       if (!videoFile || !thumbnailFile) {
+        // Check if this is due to file filtering or missing upload
+        if (req.invalidFileType) {
+          throw new BadRequestException(
+            'Invalid file type. Only video/mp4 and image/jpeg are supported.',
+          );
+        }
         throw new BadRequestException(
           'Both video and thumbnail files are required.',
         );
@@ -146,7 +158,7 @@ export class ContentController {
         sizeInKb: createdMovie.movie.video.sizeInKb,
         duration: createdMovie.movie.video.duration,
         createdAt: createdMovie.createdAt,
-        updatedAt: createdMovie.updatedAt,
+        updatedAt: createdMovie.updatedAt
       };
   }
 }

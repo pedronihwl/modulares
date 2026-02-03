@@ -12,10 +12,16 @@ import {
  * Do not extend TypeORM's BaseEntity to avoid coupling with TypeORM
  */
 export abstract class DefaultEntity<T> {
-  constructor(data: Partial<T>) {
-    Object.assign(this, data);
-    this.id = this.id || randomUUID();
+  constructor(data?: Partial<T>) {
+    if (!this.id) {
+      this.id = randomUUID();
+    }
+
+    if (data) {
+      Object.assign(this, data);
+    }
   }
+  
   @BeforeInsert()
   beforeInsert(): void {
     this.createdAt = this.createdAt || new Date();

@@ -19,28 +19,34 @@ export class ContentManagementService {
   constructor(private readonly contentRepository: ContentRepository) {}
 
   async createMovie(createMovieData: CreateMovieData): Promise<Content> {
-    const contentEntity = new Content({
-      title: createMovieData.title,
-      description: createMovieData.description,
-      type: ContentType.MOVIE,
-      movie: new Movie({
-        video: new Video({
-          url: createMovieData.url,
-          duration: 10,
-          sizeInKb: createMovieData.sizeInKb,
-        }),
-      }),
+    const video = new Video({
+      url: createMovieData.url,
+      duration: 10,
+      sizeInKb: createMovieData.sizeInKb,
     });
 
+    const movieData: any = {
+      video: video
+    };
+
     if (createMovieData.thumbnailUrl) {
-      contentEntity.movie.thumbnail = new Thumbnail({
+      movieData.thumbnail = new Thumbnail({
         url: createMovieData.thumbnailUrl,
       });
     }
 
+    const movie = new Movie(movieData);
+
+    const contentEntity = new Content({
+      title: createMovieData.title,
+      description: createMovieData.description,
+      type: ContentType.MOVIE,
+      movie: movie,
+    });
+
     // Avaliar se há a necessidade realmente de retornar um DTO
     // As vezes, o serviço pode ser reutilizado internamente, o que desconsidera a necessidade de um DTO
-    
+
     const content = await this.contentRepository.save(contentEntity);
 
     return content;

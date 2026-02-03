@@ -104,6 +104,7 @@ export class MediaController {
             return videoStream.pipe(_res);
 
         } catch (error) {
+            console.warn("ENTROU", error)
             if (error instanceof VideoNotFoundException) {
                 return _res.status(HttpStatus.NOT_FOUND).send({
                     message: error.message,

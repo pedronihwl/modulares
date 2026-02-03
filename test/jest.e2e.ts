@@ -1,6 +1,6 @@
-import config  from "./jest.shared"
+const config = require('./jest.shared.ts');
 
-export default {
-    ...config, 
-    testMatch: ['<rootDir>/src/__test__/e2e/*.spec.ts']
-}
+module.exports = {
+    ...config,
+    testMatch: ['<rootDir>/src/__tests__/e2e/*.spec.ts']
+};
