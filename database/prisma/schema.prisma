@@ -1,0 +1,34 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+  
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["identity", "test"]
+}
+
+model User {
+  id        String   @id
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  createdAt DateTime
+  updatedAt DateTime
+  deletedAt   DateTime?
+
+  @@schema("identity")
+}
+
+model Test {
+  id        String   @id
+  someField String
+  createdAt DateTime
+  updatedAt DateTime
+    deletedAt   DateTime?
+
+  @@schema("test")
+}
